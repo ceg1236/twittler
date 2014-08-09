@@ -3,63 +3,59 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
     <style>
-      body {
-        background-color: #99D6FF;
-        text-align: center;
-        margin-top:0;
-        position: absolute;
-        top: 110px;
-
-     }
-     div  {
+    body {
+      background-color: #99D6FF;
+      text-align: center;
+      margin-top:0;
+      position: relative;
+      top: 30px;
+    }
+    div  {
        text-align: left;
        background-color: #EBEBEB;
        font-family: Verdana;
-      
-      }
+       position: relative;
+    }
     
-     h1 {
+    h1 {
       text-align: left;
       color: white;
       font-family: Impact;
       font-size: 55px;
       position: relative;
-      top: -140px;
-       
-     }
-
-
+      margin-top: -28px;   
+    }
+    .timeStamp {
+      position: absolute;
+      right: 0;
+    }
+     
     </style>
   </head>
   <body>
-
-    <h1>Twittler</h1>
     
     <script>
 
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('');
+        $body.html('<h1>Twittler</h1>');
 
         var index = streams.home.length - 1;
         
           while(index >= 0){
-            var tweet = streams.home[index];
-            var $tweet = $('<div></div><br>');
-            
-            
-            var timeStamp = (' ['+ tweet.created_at +']');
+            var tweet = streams.home[index],
+                $tweet = $('<div></div><br>'),
+                timeStamp = ('['+ tweet.created_at +']');
            
 
-            $tweet.text('@' + tweet.user + ': ' + tweet.message +  timeStamp );
+            $tweet.html('<span class="tweetText">@' + tweet.user + ': ' + tweet.message+ '</span>'+  '<span class="timeStamp">' + timeStamp + '</span>');
 
             $tweet.appendTo($body);
             
             index -= 1;
           }
-        //}
+        
         var newTweets = $('<button type="button">New Tweets</button>')
         $body.append(newTweets);
         $('button').on('click', function() {
