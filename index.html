@@ -39,7 +39,7 @@
 
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('<h1>Twittler</h1>');
+        $body.html('<h1><a href="index.html" style="text-decoration:none; color:white">Twittler</a></h1>');
 
         var index = streams.home.length - 1;
         
@@ -47,22 +47,49 @@
             var tweet = streams.home[index],
                 $tweet = $('<div></div><br>'),
                 timeStamp = ('['+ tweet.created_at +']');
-           
-
-            $tweet.html('<span class="tweetText">@' + tweet.user + ': ' + tweet.message+ '</span>'+  '<span class="timeStamp">' + timeStamp + '</span>');
+                
+            $tweet.html('<a href="#" class="user">@' + tweet.user +'</a>' + ': ' + tweet.message +  '<span class="timeStamp">' + timeStamp + '</span>'); 
 
             $tweet.appendTo($body);
             
             index -= 1;
           }
-        
-        var newTweets = $('<button type="button">New Tweets</button>')
+
+        var formatTime = function(time) {
+          var date = time.getDate();
+          var month = time.getMonth()+1;
+          var year = time.getFullYear();
+          var hour= time.getHours();
+          var minutes=time.getMinutes();
+
+          return  month + "/" + date + "/" + year +' '+(hour>12? hour-12:hour)+':'+minutes 
+                                                      +(hour>12? "PM":"AM");
+        };
+        var timeList = formatTime(tweet.created_at);
+
+        var newTweets = $('<button>New Tweets</button>');
         $body.append(newTweets);
         $('button').on('click', function() {
          location.reload();
         });
-       
 
+        $('.user').on('click', function(a) {
+          console.log(a);
+          var name = event.target.text.slice(1);
+          var listed=''; 
+          
+          for(var i = 0; i<streams.users[name].length; i++) { 
+            for (var key in streams.users[name][i]) {
+
+              if(key==="message"){
+                listed += streams.users[name][i][key]+" || " +timeList+ "\n";
+
+              }
+            }
+          }
+          alert("Past Tweets:" +"\n" + listed);
+        });
+      
       });
 
     </script>
